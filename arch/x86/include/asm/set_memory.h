@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
+=======
+>>>>>>> e2927d8994a5 (treewide: move set_memory_* functions away from cacheflush.h)
 #ifndef _ASM_X86_SET_MEMORY_H
 #define _ASM_X86_SET_MEMORY_H
 
@@ -12,7 +15,10 @@
  * Executability : eXeutable, NoteXecutable
  * Read/Write    : ReadOnly, ReadWrite
  * Presence      : NotPresent
+<<<<<<< HEAD
  * Encryption    : Encrypted, Decrypted
+=======
+>>>>>>> e2927d8994a5 (treewide: move set_memory_* functions away from cacheflush.h)
  *
  * Within a category, the attributes are mutually exclusive.
  *
