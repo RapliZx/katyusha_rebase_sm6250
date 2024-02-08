@@ -73,6 +73,10 @@
 #include <asm/io.h>
 #include <asm/unistd.h>
 
+#include <linux/string_helpers.h>
+
+#define MOD_KERNEL_VERSION "4.9.186-perf+"
+
 #ifndef SET_UNALIGN_CTL
 # define SET_UNALIGN_CTL(a, b)	(-EINVAL)
 #endif
@@ -1182,8 +1186,21 @@ static int override_release(char __user *release, size_t len)
 	return ret;
 }
 
+static void override_custom_release(char __user *release, size_t len)
+{
+    char *buf;
 
-static uint64_t netbpfload_pid = 0;
+    buf = kstrdup_quotable_cmdline(current, GFP_KERNEL);
+    if (buf == NULL)
+        return;
+
+    if (strncmp(buf, "com.google.android.gms", 22) == 0) {
+            copy_to_user(release, MOD_KERNEL_VERSION, strlen(MOD_KERNEL_VERSION));
+    }
+
+    kfree(buf);
+}
+
 SYSCALL_DEFINE1(newuname, struct new_utsname __user *, name)
 {
 	struct new_utsname tmp;
@@ -1201,6 +1218,7 @@ SYSCALL_DEFINE1(newuname, struct new_utsname __user *, name)
 	if (copy_to_user(name, &tmp, sizeof(tmp)))
 		return -EFAULT;
 
+	override_custom_release(name->release, sizeof(name->release));
 	if (override_release(name->release, sizeof(name->release)))
 		return -EFAULT;
 	if (override_architecture(name))
