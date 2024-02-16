@@ -23,7 +23,7 @@
 static int default_laziness = 3;
 module_param_named(simple_laziness, default_laziness, int, 0664);
 
-static int ramp_up_threshold = 6000;
+static int ramp_up_threshold = 3000;
 module_param_named(simple_ramp_threshold, ramp_up_threshold, int, 0664);
 
 int simple_gpu_active = 1;
