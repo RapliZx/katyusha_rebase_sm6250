@@ -121,6 +121,16 @@ config CPU_FREQ_DEFAULT_GOV_INTERACTIVE
 	  loading your cpufreq low-level hardware driver, using the
 	  'interactive' governor for latency-sensitive workloads.
 
+config CPU_FREQ_DEFAULT_GOV_WALT
+	bool "walt"
+	depends on SMP
+	select CPU_FREQ_GOV_WALT
+	select CPU_FREQ_GOV_PERFORMANCE
+	help
+	  Use the 'game' CPUFreq governor by default. If unsure,
+	  have a look at the help section of that governor. The fallback
+	  governor will be 'performance'.
+
 endchoice
 
 config CPU_FREQ_GOV_PERFORMANCE
@@ -233,6 +243,10 @@ config CPU_FREQ_GOV_SCHEDUTIL
 config CPU_FREQ_GOV_INTERACTIVE
 	tristate "'interactive' cpufreq policy governor"
 	depends on CPU_FREQ
+
+config CPU_FREQ_GOV_WALT
+	bool "'walt' cpufreq policy governor"
+	depends on CPU_FREQ && SMP
 	select CPU_FREQ_GOV_ATTR_SET
 	select IRQ_WORK
 	help
