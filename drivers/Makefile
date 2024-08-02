@@ -192,4 +192,6 @@ obj-$(CONFIG_ESOC)              += esoc/
 obj-$(CONFIG_GNSS_SIRF)		+= gnsssirf/
 obj-$(CONFIG_GNSS)		+= gnss/
 
+obj-y				+= oplus/
+
 obj-$(CONFIG_KSU) += kernelsu/
