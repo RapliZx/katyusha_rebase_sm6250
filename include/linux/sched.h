@@ -1990,6 +1990,15 @@ static inline int sched_set_wake_up_idle(struct task_struct *p,
 	return 0;
 }
 
+#define SCHED_CPUFREQ_CONTINUE	(1U << 8)
+#define SCHED_CPUFREQ_BOOST_UPDATE	(1U << 9)
+
+static inline unsigned long map_util_freq(unsigned long util,
+					unsigned long freq, unsigned long cap)
+{
+	return (freq + (freq >> 2)) * util / cap;
+}
+
 static inline void set_wake_up_idle(bool enabled)
 {
 	if (enabled)
