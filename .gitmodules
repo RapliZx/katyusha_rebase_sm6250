@@ -1,3 +1,6 @@
 [submodule "KernelSU-Next"]
 	path = KernelSU-Next
 	url = https://github.com/rifsxd/KernelSU-Next
+[submodule "KernelSU"]
+	path = KernelSU
+	url = https://github.com/RapliVx/KernelSU.git
