@@ -4,7 +4,8 @@
 #include <linux/memblock.h>
 #include <linux/mem_encrypt.h>
 
-#include <asm/set_memory.h>
+#include <asm/cacheflush.h>
+#include <linux/set_memory.h>
 #include <asm/pgtable.h>
 #include <asm/realmode.h>
 #include <asm/tlbflush.h>

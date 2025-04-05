@@ -18,7 +18,7 @@
 #include <trace/syscall.h>
 #include <asm/asm-offsets.h>
 #include <asm/cacheflush.h>
-#include <asm/set_memory.h>
+#include <linux/set_memory.h>
 #include "entry.h"
 
 /*

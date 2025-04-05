@@ -12,7 +12,7 @@
 #include <linux/filter.h>
 #include <linux/if_vlan.h>
 #include <asm/cacheflush.h>
-#include <asm/set_memory.h>
+#include <linux/set_memory.h>
 #include <asm/nospec-branch.h>
 #include <linux/bpf.h>
 
