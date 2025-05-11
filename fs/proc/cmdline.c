@@ -3,6 +3,11 @@
 #include <linux/init.h>
 #include <linux/proc_fs.h>
 #include <linux/seq_file.h>
+
+#ifdef CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG
+	extern int susfs_spoof_cmdline_or_bootconfig(struct seq_file *m);
+#endif
+
 #include <asm/setup.h>
 
 static char new_command_line[COMMAND_LINE_SIZE];
@@ -78,6 +83,13 @@ static void patch_safetynet_flags(char *cmd)
 	patch_flag(cmd, "androidboot.count=", "100");
 	patch_flag(cmd, "androidboot.tags=", "release-keys");
 }
+
+#ifdef CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG
+	if (!susfs_spoof_cmdline_or_bootconfig(m)) {
+		seq_putc(m, '\n');
+		return 0;
+	}
+#endif
 
 static int __init proc_cmdline_init(void)
 {
