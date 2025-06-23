@@ -1,0 +1,143 @@
+name: SUKISU KPM Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Kernel
+    runs-on: buildjet-32vcpu-ubuntu-2204
+
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+
+    steps:
+      - name: Checkout Kernel Source
+        uses: actions/checkout@v3
+
+      - name: Prepare timezone 
+        run: |
+          echo "BUILD_TIME=$(TZ=Asia/Jakarta date '+%d%m%Y-%H%M')" >> $GITHUB_ENV
+          sudo rm /etc/localtime
+          sudo ln -s /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+          
+      - name: Fetch SUKISU
+        run: |
+          curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash -s susfs-main
+          
+      - name: Fetch AOSP Clang
+        run: |
+          mkdir aosp-clang
+          wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/main/clang-r547379.tar.gz -O "aosp-clang.tar.gz"
+          tar -C aosp-clang/ -xf aosp-clang.tar.gz && rm -rf aosp-clang.tar.gz
+
+      - name: Fetch Gcc
+        run: |
+           git clone https://github.com/greenforce-project/gcc-arm64 -b main --depth=1 gcc64
+           git clone https://github.com/greenforce-project/gcc-arm -b main --depth=1 gcc32
+          
+      - name: Set Environment Variables
+        run: |
+          echo "KERNEL_DEFCONFIG=surya_defconfig" >> $GITHUB_ENV
+          echo "TOOLCHAIN=$(pwd)/aosp-clang" >> $GITHUB_ENV
+          echo "PATH=$(pwd)/aosp-clang/bin:$PATH" >> $GITHUB_ENV
+          echo "BUILD_USER=Mahirooo" >> $GITHUB_ENV
+          echo "BUILD_HOST=HiraTeam" >> $GITHUB_ENV
+          echo "BUILD_TIME=$(date +%Y%m%d-%H%M)" >> $GITHUB_ENV
+          
+      - name: Send Telegram Notification - Build Started
+        run: |
+             CLANG_VER=$(./aosp-clang/bin/clang --version | head -n 1)
+             curl -s -X POST https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage \
+             -d chat_id=${TELEGRAM_CHAT_ID} \
+             -d text="🚀 *Build Dimulai!* Using *Clang*: ${CLANG_VER}" \
+             -d parse_mode=Markdown
+      
+      - name: Set Build Start Time
+        run: echo "BUILD_START=$(date +%s)" >> $GITHUB_ENV
+
+      - name: Make Defconfig
+        run: |
+          sudo apt install device-tree-compiler -y
+          make O=out ARCH=arm64 ${KERNEL_DEFCONFIG}
+          
+      - name: Build SukiSU Kernel
+        run: |
+          make -j$(nproc) O=out \
+            ARCH=arm64 \
+            LD=ld.lld \
+            AS=llvm-as \
+            AR=llvm-ar \
+            NM=llvm-nm \
+            OBJCOPY=llvm-objcopy \
+            OBJDUMP=llvm-objdump \
+            STRIP=llvm-strip \
+            CROSS_COMPILE=aarch64-linux-gnu- \
+            CROSS_COMPILE_COMPAT=arm-linux-gnueabi- \
+            CLANG_TRIPLE=aarch64-linux-gnu- \
+            LLVM=1 \
+            LLVM_IAS=1 \
+            DTC_EXT=dtc \
+            KBUILD_COMPILER_STRING="${CLANG_VER}" \
+            KBUILD_BUILD_USER=${BUILD_USER} \
+            KBUILD_BUILD_HOST=${BUILD_HOST} 2>&1 | tee log.txt
+        continue-on-error: true
+
+      - name: Patch KPM Support SukiSU
+        run: |
+            # Image directory
+            cd $(pwd)/out/arch/arm64/boot
+            
+            # Download latest patch_linux
+            LATEST_PATCH_URL=$(curl -s https://api.github.com/repos/SukiSU-Ultra/SukiSU_KernelPatch_patch/releases/latest \
+            | grep "browser_download_url" \
+            | grep "patch_linux" \
+            | cut -d '"' -f 4)
+            curl -L -o patch_linux "$LATEST_PATCH_URL"
+
+            # Run patch
+            chmod +x patch_linux
+            ./patch_linux  
+
+            # Replace Image with patched oImage
+            rm -f Image Image.gz-dtb
+            mv oImage Image  
+
+            # Compress and append DTBs
+            gzip -c Image > Image.gz
+            cat Image.gz dts/*/*.dtb > Image.gz-dtb
+
+            # Back to working directory
+            cd $(pwd)
+
+      - name: Fetch AnyKernel3 SukiSU
+        run: |
+          git clone --depth=1 https://github.com/RapliVx/AnyKernel3.git -b miatoll  
+           if [ -f out/arch/arm64/boot/Image.gz ]; then
+            cp out/arch/arm64/boot/Image.gz AnyKernel3/Image.gz
+           fi
+           if [ -f out/arch/arm64/boot/dtbo.img ]; then
+            cp out/arch/arm64/boot/dtbo.img AnyKernel3/dtbo.img
+           fi           
+           if [ -f out/arch/arm64/boot/dtb.img ]; then
+            cp out/arch/arm64/boot/dtb.img AnyKernel3/dtb.img
+           fi
+          cd AnyKernel3
+          zip -r9 ../Wonderhoy-SUKISU-KPM-${{ env.BUILD_TIME }}.zip ./*
+          
+      - name: Send Telegram Notification - Build Failed (SUKISU)
+        if: failure()
+        run: |
+          curl -s -X POST https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument \
+            -F chat_id=${TELEGRAM_CHAT_ID} \
+            -F document=@log.txt \
+            -F caption="❌ Build Katyusha *gagal*! Berikut log-nya 🧾." \
+            -F parse_mode=Markdown
+
+      - name: Send SUKISU to Telegram
+        run: |
+          curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendDocument" \
+          -F chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
+          -F document=@Wonderhoy-SUKISU-KPM-${{ env.BUILD_TIME }}.zip \
+
