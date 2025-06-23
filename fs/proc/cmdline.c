@@ -3,13 +3,6 @@
 #include <linux/init.h>
 #include <linux/proc_fs.h>
 #include <linux/seq_file.h>
-#include <linux/string.h>
-#include <linux/fs.h>
-
-#ifdef CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG
-extern bool susfs_spoof_cmdline_or_bootconfig(struct seq_file *m);
-#endif
-
 #include <asm/setup.h>
 
 static char new_command_line[COMMAND_LINE_SIZE];
