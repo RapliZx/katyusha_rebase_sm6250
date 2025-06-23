@@ -42,8 +42,8 @@ jobs:
           echo "KERNEL_DEFCONFIG=surya_defconfig" >> $GITHUB_ENV
           echo "TOOLCHAIN=$(pwd)/aosp-clang" >> $GITHUB_ENV
           echo "PATH=$(pwd)/aosp-clang/bin:$PATH" >> $GITHUB_ENV
-          echo "BUILD_USER=Mahirooo" >> $GITHUB_ENV
-          echo "BUILD_HOST=HiraTeam" >> $GITHUB_ENV
+          echo "BUILD_USER=Rapli" >> $GITHUB_ENV
+          echo "BUILD_HOST=NyarchLinux" >> $GITHUB_ENV
           echo "BUILD_TIME=$(date +%Y%m%d-%H%M)" >> $GITHUB_ENV
           
       - name: Send Telegram Notification - Build Started
