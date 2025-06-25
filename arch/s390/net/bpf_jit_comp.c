@@ -24,7 +24,6 @@
 #include <linux/init.h>
 #include <linux/bpf.h>
 #include <asm/cacheflush.h>
-#include <linux/set_memory.h>
 #include <asm/dis.h>
 #include <asm/facility.h>
 #include <asm/nospec-branch.h>
