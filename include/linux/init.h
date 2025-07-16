@@ -308,8 +308,4 @@ void __init parse_early_options(char *cmdline);
 #define __exit_p(x) NULL
 #endif
 
-/* KSU FIX IDK ITS WORK OR NOT */
-#define CMD_SUSFS_MOUNT_FOR_ZYGOTE_ISO_SERVICE   0x04
-#define CMD_SUSFS_UMOUNT_FOR_ZYGOTE_ISO_SERVICE  0x05
-
 #endif /* _LINUX_INIT_H */
