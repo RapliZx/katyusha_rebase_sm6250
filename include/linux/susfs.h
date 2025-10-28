@@ -207,6 +207,9 @@ int susfs_add_sus_map(struct st_susfs_sus_map* __user user_info);
 int susfs_get_enabled_features(char __user* buf, size_t bufsize);
 void susfs_set_avc_log_spoofing(bool enabled);
 
+#define CMD_SUSFS_ADD_SUS_PATH_LOOP 0x1234
+#define TIF_PROC_UMOUNTED    29
+
 /* susfs_init */
 void susfs_init(void);
 
