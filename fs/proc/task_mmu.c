@@ -473,7 +473,7 @@ show_map_vma(struct seq_file *m, struct vm_area_struct *vma, int is_pid)
 	if (file) {
 		struct inode *inode = file_inode(vma->vm_file);
 #ifdef CONFIG_KSU_SUSFS_SUS_MAP
-		if (unlikely(inode->i_mapping->flags & BIT_SUS_MAPS)) {
+		if (unlikely(inode->i_mapping->flags & BIT_SUS_MAPS) && susfs_is_current_non_root_user_app_proc()) {
 			seq_setwidth(m, 25 + sizeof(void *) * 6 - 1);
 			seq_put_hex_ll(m, NULL, vma->vm_start, 8);
 			seq_put_hex_ll(m, "-", vma->vm_end, 8);
