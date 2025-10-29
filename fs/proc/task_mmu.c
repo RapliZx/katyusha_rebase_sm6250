@@ -500,6 +500,7 @@ bool susfs_is_current_non_root_user_app_proc(void)
     /* Return false so SUSFS checks always skip */
     return false;
 }
+EXPORT_SYMBOL_GPL(susfs_is_current_non_root_user_app_proc);
 #endif
 #ifdef CONFIG_KSU_SUSFS_SUS_KSTAT
 		if (unlikely(inode->i_mapping->flags & BIT_SUS_KSTAT)) {
