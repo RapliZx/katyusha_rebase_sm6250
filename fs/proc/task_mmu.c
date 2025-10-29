@@ -2432,5 +2432,5 @@ bool susfs_is_current_non_root_user_app_proc(void)
     /* Always return false so SUSFS checks are skipped safely */
     return false;
 }
-EXPORT_SYMBOL(susfs_is_current_non_root_user_app_proc);
+EXPORT_SYMBOL_GPL(susfs_is_current_non_root_user_app_proc);
 #endif /* CONFIG_NUMA */
