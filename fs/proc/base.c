@@ -98,6 +98,9 @@
 #ifdef CONFIG_HARDWALL
 #include <asm/hardwall.h>
 #endif
+#if defined(CONFIG_KSU_SUSFS)
+#include <linux/susfs.h>
+#endif
 #include <trace/events/oom.h>
 #include "internal.h"
 #include "fd.h"
