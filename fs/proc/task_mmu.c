@@ -493,14 +493,6 @@ show_map_vma(struct seq_file *m, struct vm_area_struct *vma, int is_pid)
 			goto done;
 		}
 #endif
-#ifdef CONFIG_KSU_SUSFS_SUS_MAP
-/* Dummy SUSFS function (if SUSFS not implemented) */
-bool susfs_is_current_non_root_user_app_proc(void)
-{
-    /* Always return false so SUSFS checks are skipped safely */
-    return false;
-}
-#endif /* CONFIG_KSU_SUSFS_SUS_MAP */
 #ifdef CONFIG_KSU_SUSFS_SUS_KSTAT
 		if (unlikely(inode->i_mapping->flags & BIT_SUS_KSTAT)) {
 			susfs_sus_ino_for_show_map_vma(inode->i_ino, &dev, &ino);
@@ -2433,4 +2425,9 @@ const struct file_operations proc_tid_numa_maps_operations = {
 	.llseek		= seq_lseek,
 	.release	= proc_map_release,
 };
+bool susfs_is_current_non_root_user_app_proc(void)
+{
+    /* Always return false so SUSFS checks are skipped safely */
+    return false;
+}
 #endif /* CONFIG_NUMA */
