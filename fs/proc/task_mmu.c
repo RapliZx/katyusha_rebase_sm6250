@@ -494,13 +494,13 @@ show_map_vma(struct seq_file *m, struct vm_area_struct *vma, int is_pid)
 		}
 #endif
 #ifdef CONFIG_KSU_SUSFS_SUS_MAP
-/* dummy susfs function (if SUSFS not really implemented) */
+/* Dummy SUSFS function (if SUSFS not implemented) */
 bool susfs_is_current_non_root_user_app_proc(void)
 {
-    /* Return false so SUSFS checks always skip */
+    /* Always return false so SUSFS checks are skipped safely */
     return false;
 }
-#endif
+#endif /* CONFIG_KSU_SUSFS_SUS_MAP */
 #ifdef CONFIG_KSU_SUSFS_SUS_KSTAT
 		if (unlikely(inode->i_mapping->flags & BIT_SUS_KSTAT)) {
 			susfs_sus_ino_for_show_map_vma(inode->i_ino, &dev, &ino);
