@@ -20,6 +20,9 @@
 #include <linux/uaccess.h>
 #include <linux/mm_inline.h>
 #include <linux/ctype.h>
+#if defined(CONFIG_KSU_SUSFS)
+#include <linux/susfs.h>
+#endif
 #if defined(CONFIG_KSU_SUSFS_SUS_KSTAT) || defined(CONFIG_KSU_SUSFS_SUS_MAP)
 #include <linux/susfs_def.h>
 #endif
