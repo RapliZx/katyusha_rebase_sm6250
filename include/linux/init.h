@@ -308,4 +308,6 @@ void __init parse_early_options(char *cmdline);
 #define __exit_p(x) NULL
 #endif
 
+#define CMD_SUSFS_ADD_SUS_MAP 0x1234
+
 #endif /* _LINUX_INIT_H */
