@@ -36,8 +36,6 @@
 extern void susfs_sus_ino_for_show_map_vma(unsigned long ino, dev_t *out_dev, unsigned long *out_ino);
 #endif
 
-bool susfs_is_current_non_root_user_app_proc(void);
-
 void task_mem(struct seq_file *m, struct mm_struct *mm)
 {
 	unsigned long text, lib, swap, ptes, pmds, anon, file, shmem;
