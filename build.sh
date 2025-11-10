@@ -65,7 +65,7 @@ echo
 echo -e "\n$green[!] Lets's Build UwU...\033[0m \n"
 sleep 1
 echo -e "\n$blue[+] Running SukiSU-Ultra setup script...\033[0m\n"
-curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash -s susfs-main
+curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash -s susfs-To_be_updated
 echo -e "\n$green[+] SukiSU-Ultra setup selesai!\033[0m\n"
 fi
 }
