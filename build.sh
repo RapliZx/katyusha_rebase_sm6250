@@ -7,9 +7,9 @@ PHONE="Miatoll"
 DEFCONFIG=vendor/xiaomi/miatoll_defconfig
 COMPILERDIR="$(pwd)/../aosp-clang"
 CLANG="AOSP Clang"
-CODENAME="[Cyrene]"
-ZIPNAME="Katyusha-Karnal-$CODENAME-$PHONE-$(date '+%Y%m%d-%H%M').zip"
-CAPTION="Katyusha Kernel $PHONE Compile Complete, Have A Brick Day Nihahahah"
+CODENAME="[Zandar]"
+ZIPNAME="ProjectAmphoreus-$CODENAME-$PHONE-$(date '+%Y%m%d-%H%M').zip"
+CAPTION="ProjectAmphoreus $PHONE Compile Complete, Have A Brick Day Nihahahah"
 MESSAGE="• Build For $PHONE Started •"
 MESSAGE_ERROR="• Error Build For $PHONE Aborted •"
 kernel="out/arch/arm64/boot/Image.gz"
@@ -65,7 +65,7 @@ echo
 echo -e "\n$green[!] Lets's Build UwU...\033[0m \n"
 sleep 1
 echo -e "\n$blue[+] Running SukiSU-Ultra setup script...\033[0m\n"
-curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash -s susfs-To_be_updated
+curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash -s susfs-test
 echo -e "\n$green[+] SukiSU-Ultra setup selesai!\033[0m\n"
 fi
 }
