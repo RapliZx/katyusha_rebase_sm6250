@@ -1186,8 +1186,6 @@ static int override_release(char __user *release, size_t len)
 	return ret;
 }
 
-static uint64_t netbpfload_pid = 0;
-
 static void override_custom_release(char __user *release, size_t len)
 {
     char *buf;
