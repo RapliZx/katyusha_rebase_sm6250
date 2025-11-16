@@ -75,7 +75,7 @@
 
 #include <linux/string_helpers.h>
 
-#define MOD_KERNEL_VERSION "4.14.190-perf"
+#define MOD_KERNEL_VERSION "4.9.186-perf+"
 
 #ifndef SET_UNALIGN_CTL
 # define SET_UNALIGN_CTL(a, b)	(-EINVAL)
